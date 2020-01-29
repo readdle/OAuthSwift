@@ -79,11 +79,19 @@ extension String {
                     }
                 }
             } else {
+                #if os(Windows)
+                var key: String?
+                #else
                 var key: NSString?
+                #endif
                 scanner.scanUpTo(keyValueSeparator, into: &key)
                 scanner.scanString(keyValueSeparator, into: nil)
 
+                #if os(Windows)
+                var value: String?
+                #else
                 var value: NSString?
+                #endif
                 scanner.scanUpTo(elementSeparator, into: &value)
                 scanner.scanString(elementSeparator, into: nil)
                 if let key = key as String? {
@@ -137,9 +145,60 @@ extension String {
 extension String.Encoding {
 
     var charset: String {
+        #if os(Windows)
+        // from Kanna libxmlHTMLDocument.swift
+        switch self {
+        case .ascii:
+            return "us-ascii"
+        case .iso2022JP:
+            return "iso-2022-jp"
+        case .isoLatin1:
+            return "iso-8859-1"
+        case .isoLatin2:
+            return "iso-8859-2"
+        case .japaneseEUC:
+            return "euc-jp"
+        case .macOSRoman:
+            return "macintosh"
+        case .nextstep:
+            return "x-nextstep"
+        case .shiftJIS:
+            return "cp932"
+        case .symbol:
+            return "x-mac-symbol"
+        case .unicode:
+            return "utf-16"
+        case .utf16:
+            return "utf-16"
+        case .utf16BigEndian:
+            return "utf-16be"
+        case .utf32:
+            return "utf-32"
+        case .utf32BigEndian:
+            return "utf-32be"
+        case .utf32LittleEndian:
+            return "utf-32le"
+        case .utf8:
+            return "utf-8"
+        case .windowsCP1250:
+            return "windows-1250"
+        case .windowsCP1251:
+            return "windows-1251"
+        case .windowsCP1252:
+            return "windows-1252"
+        case .windowsCP1253:
+            return "windows-1253"
+        case .windowsCP1254:
+            return "windows-1254"
+        default:
+        // case .nonLossyASCII:
+            return "utf-8"
+        }
+        #else
         let charset = CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(self.rawValue))
          // swiftlint:disable:next force_cast superfluous_disable_command
         return charset! as String
+        #endif
     }
 
 }

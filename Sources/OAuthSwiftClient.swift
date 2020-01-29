@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public var OAuthSwiftDataEncoding: String.Encoding = .utf8
 
@@ -111,7 +114,7 @@ open class OAuthSwiftClient: NSObject {
     }
 
     open func makeMultiPartRequest(_ url: URLConvertible, method: OAuthSwiftHTTPRequest.Method, parameters: OAuthSwift.Parameters = [:], multiparts: [OAuthSwiftMultipartData] = [], headers: OAuthSwift.Headers? = nil) -> OAuthSwiftHTTPRequest? {
-        let boundary = "AS-boundary-\(arc4random())-\(arc4random())"
+        let boundary = "AS-boundary-\(UInt32.random(in: 0...UInt32.max))-\(UInt32.random(in: 0...UInt32.max))"
         let type = "multipart/form-data; boundary=\(boundary)"
         let body = self.multiDataFromObject(parameters, multiparts: multiparts, boundary: boundary)
 
