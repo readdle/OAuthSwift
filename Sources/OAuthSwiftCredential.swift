@@ -27,7 +27,12 @@ public enum OAuthSwiftHashMethod: String {
         switch self {
         case .sha1:
             let mac = SHA1(data).calculate()
-            return Data(bytes: UnsafePointer<UInt8>(mac), count: mac.count)
+            return mac.withUnsafeBytes { bufferPointer in
+                guard let baseAddress = bufferPointer.baseAddress else {
+                    return nil
+                }
+                return Data(bytes: baseAddress, count: bufferPointer.count)
+            }
         case .none:
             return data
         }
