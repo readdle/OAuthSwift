@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 #if os(iOS)
 #if !OAUTH_APP_EXTENSIONS
 import UIKit

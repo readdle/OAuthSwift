@@ -55,8 +55,9 @@ public extension NSError {
                     let bodyData = body.data(using: OAuthSwiftDataEncoding),
                     let json = try? JSONSerialization.jsonObject(with: bodyData, options: []),
                     let jsonDic = json as? [String: AnyObject] {
-                    let errorCode = jsonDic["error"]?["code"] as? Int
-                    let errorSubCode = jsonDic["error"]?["error_subcode"] as? Int
+                    let error = jsonDic["error"] as? [String: AnyObject]
+                    let errorCode = error?["code"] as? Int
+                    let errorSubCode = error?["error_subcode"] as? Int
                     if (errorCode == 102 && errorSubCode == nil) || errorSubCode == 463 || errorSubCode == 467 {
                         return true
                     }
