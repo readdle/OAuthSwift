@@ -106,11 +106,13 @@ open class OAuthSwiftHTTPRequest: NSObject, OAuthSwiftRequestHandle {
             self.session.finishTasksAndInvalidate()
 
             #if os(iOS)
-                #if !OAUTH_APP_EXTENSIONS
-                #if !targetEnvironment(macCatalyst)
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = self.config.sessionFactory.isNetworkActivityIndicatorVisible
-                    #endif
-                #endif
+            #if !OAUTH_APP_EXTENSIONS
+            #if !targetEnvironment(macCatalyst)
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = self.config.sessionFactory.isNetworkActivityIndicatorVisible
+            }
+            #endif
+            #endif
             #endif
         }
     }
@@ -120,7 +122,9 @@ open class OAuthSwiftHTTPRequest: NSObject, OAuthSwiftRequestHandle {
         #if os(iOS)
         #if !OAUTH_APP_EXTENSIONS
         #if !targetEnvironment(macCatalyst)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        DispatchQueue.main.async {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
         #endif
         #endif
         #endif
