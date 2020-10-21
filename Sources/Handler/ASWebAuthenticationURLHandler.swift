@@ -52,10 +52,7 @@ open class ASWebAuthenticationURLHandler: OAuthSwiftURLHandlerType {
         #if os(iOS) && !OAUTH_APP_EXTENSIONS
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
         #else
-        // The iOS counterpart requires developers to register custom URL scheme for app and forward throught system available OAuth parameters.
-        // Maybe it makes sence to unify flow if you already added such scheme.
-        // But, I do not see any reason for us to do this.
-        OAuthSwift.handle(url: url)
+        NSWorkspace.shared.open(url)
         #endif
     }
 }
