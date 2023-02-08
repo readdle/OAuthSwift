@@ -33,7 +33,11 @@ let package = Package(
         .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.4.7"))
     ],
     targets: [
-        .target(name: "OAuthSwift", dependencies: [], path: "Sources"),
+        .target(name: "OAuthSwift", dependencies: [], path: "Sources", exclude: [
+            "Handler/OAuthWebViewController.swift",
+            "Handler/OAuthSwiftURLHandlerProxy.swift",
+            "Handler/ExtensionContextURLHandler.swift"
+        ]),
         .testTarget(name: "OAuthSwiftTests", dependencies: ["OAuthSwift", "Erik", "Kanna", "Swifter"], path: "OAuthSwiftTests"),
     ]
 )

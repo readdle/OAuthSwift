@@ -79,7 +79,7 @@ extension String {
                     }
                 }
             } else {
-                #if os(Windows)
+                #if os(Windows) || os(Android)
                 var key: String?
                 #else
                 var key: NSString?
@@ -87,7 +87,7 @@ extension String {
                 scanner.scanUpTo(keyValueSeparator, into: &key)
                 scanner.scanString(keyValueSeparator, into: nil)
 
-                #if os(Windows)
+                #if os(Windows) || os(Android)
                 var value: String?
                 #else
                 var value: NSString?
@@ -145,7 +145,7 @@ extension String {
 extension String.Encoding {
 
     var charset: String {
-        #if os(Windows)
+        #if os(Windows) || os(Android)
         // from Kanna libxmlHTMLDocument.swift
         switch self {
         case .ascii:
