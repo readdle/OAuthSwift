@@ -37,10 +37,6 @@ open class OAuth1Swift: OAuthSwift {
         self.client.credential.version = .oauth1
     }
 
-    public convenience override init(consumerKey: String, consumerSecret: String) {
-        self.init(consumerKey: consumerKey, consumerSecret: consumerSecret, requestTokenUrl: "", authorizeUrl: "", accessTokenUrl: "")
-    }
-
     public convenience init?(parameters: ConfigParameters) {
         guard let consumerKey = parameters["consumerKey"], let consumerSecret = parameters["consumerSecret"],
             let requestTokenUrl = parameters["requestTokenUrl"], let authorizeUrl = parameters["authorizeUrl"], let accessTokenUrl = parameters["accessTokenUrl"] else {
