@@ -22,6 +22,17 @@
 
 import PackageDescription
 
+let excludedSources: [String]
+#if TARGET_ANDROID
+excludedSources = [
+    "Handler/OAuthWebViewController.swift",
+    "Handler/OAuthSwiftURLHandlerProxy.swift",
+    "Handler/ExtensionContextURLHandler.swift",
+]
+#else
+excludedSources = []
+#endif
+
 let package = Package(
     name: "OAuthSwift",
     products: [
@@ -33,11 +44,7 @@ let package = Package(
         .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.4.7"))
     ],
     targets: [
-        .target(name: "OAuthSwift", dependencies: [], path: "Sources", exclude: [
-            "Handler/OAuthWebViewController.swift",
-            "Handler/OAuthSwiftURLHandlerProxy.swift",
-            "Handler/ExtensionContextURLHandler.swift"
-        ]),
+        .target(name: "OAuthSwift", dependencies: [], path: "Sources", exclude: excludedSources),
         .testTarget(name: "OAuthSwiftTests", dependencies: ["OAuthSwift", "Erik", "Kanna", "Swifter"], path: "OAuthSwiftTests"),
     ]
 )
