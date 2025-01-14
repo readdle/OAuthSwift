@@ -126,9 +126,13 @@ open class OAuth2Swift: OAuthSwift {
                     this.putHandle(handle, withKey: UUID().uuidString)
                 }
             } else if let error = responseParameters["error"] {
-                let description = responseParameters["error_description"] ?? ""
-                let message = NSLocalizedString(error, comment: description)
-                completion(.failure(.serverError(message: message)))
+                if this.isCancelledError(responseParameters) {
+                    completion(.failure(.cancelled))
+                } else {
+                    let description = responseParameters["error_description"] ?? ""
+                    let message = NSLocalizedString(error, comment: description)
+                    completion(.failure(.serverError(message: message)))
+                }
             } else {
                 let message = "No access_token, no code and no error provided by server"
                 completion(.failure(.serverError(message: message)))
@@ -373,5 +377,15 @@ open class OAuth2Swift: OAuthSwift {
         pkceParameters["code_challenge_method"] = codeChallengeMethod
 
         return authorize(withCallbackURL: callbackURL, scope: scope, state: state, parameters: parameters + pkceParameters, headers: headers, completionHandler: completion)
+    }
+    
+    /// Handling  Canceled Login errors
+    fileprivate func isCancelledError(_ responseParameters: [String: String]) -> Bool {
+        // Microsoft 365 cancellation
+        if let subcode = responseParameters["error_subcode"], subcode == "cancel" {
+            return true
+        }
+        
+        return false
     }
 }
