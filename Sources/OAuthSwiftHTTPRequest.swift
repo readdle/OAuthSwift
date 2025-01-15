@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 #if os(iOS)
 #if !OAUTH_APP_EXTENSIONS
 import UIKit
@@ -19,7 +22,7 @@ open class OAuthSwiftHTTPRequest: NSObject, OAuthSwiftRequestHandle {
 
     // Using NSLock for Linux compatible locking 
     let requestLock = NSLock()
-    
+
     public typealias CompletionHandler = (_ result: Result<OAuthSwiftResponse, OAuthSwiftError>) -> Void
 
     /// HTTP request method
@@ -103,9 +106,13 @@ open class OAuthSwiftHTTPRequest: NSObject, OAuthSwiftRequestHandle {
             self.session.finishTasksAndInvalidate()
 
             #if os(iOS)
-                #if !OAUTH_APP_EXTENSIONS
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = self.config.sessionFactory.isNetworkActivityIndicatorVisible
-                #endif
+            #if !OAUTH_APP_EXTENSIONS
+            #if !targetEnvironment(macCatalyst)
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = self.config.sessionFactory.isNetworkActivityIndicatorVisible
+            }
+            #endif
+            #endif
             #endif
         }
     }
@@ -114,7 +121,11 @@ open class OAuthSwiftHTTPRequest: NSObject, OAuthSwiftRequestHandle {
     public static func completionHandler(completionHandler completion: CompletionHandler?, request: URLRequest, data: Data?, resp: URLResponse?, error: Error?) {
         #if os(iOS)
         #if !OAUTH_APP_EXTENSIONS
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        #if !targetEnvironment(macCatalyst)
+        DispatchQueue.main.async {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
+        #endif
         #endif
         #endif
 

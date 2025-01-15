@@ -36,8 +36,12 @@ open class HMAC {
         let ipadAndMessageHash = SHA1(ipad + message).calculate()
         let mac = SHA1(opad + ipadAndMessageHash).calculate()
 
-        return Data(bytes: UnsafePointer<UInt8>(mac), count: mac.count)
-
+        return mac.withUnsafeBytes { bufferPointer in
+            guard let baseAddress = bufferPointer.baseAddress else {
+                return nil
+            }
+            return Data(bytes: baseAddress, count: bufferPointer.count)
+        }
     }
 
 }

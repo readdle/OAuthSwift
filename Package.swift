@@ -22,13 +22,29 @@
 
 import PackageDescription
 
+let excludedSources: [String]
+#if TARGET_ANDROID
+excludedSources = [
+    "Handler/OAuthWebViewController.swift",
+    "Handler/OAuthSwiftURLHandlerProxy.swift",
+    "Handler/ExtensionContextURLHandler.swift",
+]
+#else
+excludedSources = []
+#endif
+
 let package = Package(
     name: "OAuthSwift",
     products: [
         .library(name: "OAuthSwift", targets: ["OAuthSwift"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/phimage/Erik.git", .upToNextMajor(from: "5.0.0")),
+        .package(url: "https://github.com/tid-kijyun/Kanna.git", .upToNextMajor(from: "5.0.0")),
+        .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.4.7"))
+    ],
     targets: [
-        .target(name: "OAuthSwift", dependencies: [], path: "Sources"),
-        .testTarget(name: "OAuthSwiftTests", dependencies: ["OAuthSwift"], path: "OAuthSwiftTests"),
+        .target(name: "OAuthSwift", dependencies: [], path: "Sources", exclude: excludedSources),
+        .testTarget(name: "OAuthSwiftTests", dependencies: ["OAuthSwift", "Erik", "Kanna", "Swifter"], path: "OAuthSwiftTests"),
     ]
 )
