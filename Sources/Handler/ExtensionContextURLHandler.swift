@@ -17,7 +17,10 @@ open class ExtensionContextURLHandler: OAuthSwiftURLHandlerType {
         self.extensionContext = extensionContext
     }
 
-    @objc open func handle(_ url: URL) {
+    #if _runtime(_ObjC)
+    @objc 
+    #endif
+    open func handle(_ url: URL) {
         extensionContext.open(url, completionHandler: nil)
     }
 }

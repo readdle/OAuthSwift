@@ -21,7 +21,10 @@ open class OAuthSwiftOpenURLExternally: OAuthSwiftURLHandlerType {
 
     public static var sharedInstance: OAuthSwiftOpenURLExternally = OAuthSwiftOpenURLExternally()
 
-    @objc open func handle(_ url: URL) {
+    #if _runtime(_ObjC)
+    @objc 
+    #endif
+    open func handle(_ url: URL) {
         #if os(iOS) || os(tvOS)
         #if !OAUTH_APP_EXTENSIONS
         if #available(iOS 10.0, *) {

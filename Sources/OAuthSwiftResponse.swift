@@ -12,7 +12,9 @@ import FoundationNetworking
 #endif
 
 /// Response object
+#if _runtime(_ObjC)
 @objc
+#endif
 public class OAuthSwiftResponse: NSObject { // not a struct for objc
     /// The data returned by the server.
     public var data: Data

@@ -13,7 +13,10 @@ import FoundationNetworking
 
 public var OAuthSwiftDataEncoding: String.Encoding = .utf8
 
-@objc public protocol OAuthSwiftRequestHandle {
+#if _runtime(_ObjC)
+@objc 
+#endif
+public protocol OAuthSwiftRequestHandle {
     func cancel()
 }
 

@@ -18,7 +18,10 @@ import AppKit
 
 /// Protocol to defined how to open the url.
 /// You could choose to open using an external browser, a safari controller, an internal webkit view controller, etc...
-@objc public protocol OAuthSwiftURLHandlerType {
+#if _runtime(_ObjC)
+@objc 
+#endif
+public protocol OAuthSwiftURLHandlerType {
     func handle(_ url: URL)
 }
 

@@ -36,7 +36,10 @@ open class OAuthSwiftHTTPRequest: NSObject, OAuthSwiftRequestHandle {
     }
 
     /// Where the additional parameters will be injected
-    @objc public enum ParamsLocation: Int {
+    #if _runtime(_ObjC)
+    @objc 
+    #endif
+    public enum ParamsLocation: Int {
         case authorizationHeader, /*FormEncodedBody,*/ requestURIQuery
     }
 
