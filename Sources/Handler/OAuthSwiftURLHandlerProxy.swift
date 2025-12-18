@@ -6,6 +6,8 @@
 //  Copyright © 2019 Dongri Jin, Marchand Eric. All rights reserved.
 //
 
+#if os(macOS) || os(iOS) || os(tvOS)
+
 import Foundation
 
 /// Proxy class to make weak reference to handler.
@@ -25,3 +27,5 @@ extension OAuthSwiftURLHandlerType {
         return OAuthSwiftURLHandlerProxy(self)
     }
 }
+
+#endif

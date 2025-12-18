@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Dongri Jin. All rights reserved.
 //
 
+#if os(macOS) || os(iOS) || os(tvOS)
+
 import Foundation
 
 #if os(iOS) || os(tvOS)
@@ -191,3 +193,5 @@ open class OAuthWebViewController: OAuthViewController, OAuthSwiftURLHandlerType
 
     #endif
 }
+
+#endif

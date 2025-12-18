@@ -6,6 +6,8 @@
 //  Copyright © 2019 Dongri Jin, Marchand Eric. All rights reserved.
 //
 
+#if os(macOS) || os(iOS) || os(tvOS)
+
 import Foundation
 
 /// Open url using `NSExtensionContext``
@@ -24,3 +26,5 @@ open class ExtensionContextURLHandler: OAuthSwiftURLHandlerType {
         extensionContext.open(url, completionHandler: nil)
     }
 }
+
+#endif
