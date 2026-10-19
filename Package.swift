@@ -23,7 +23,7 @@
 import PackageDescription
 
 let excludedSources: [String]
-#if TARGET_ANDROID
+#if TARGET_ANDROID || TARGET_LINUX
 excludedSources = [
     "Handler/OAuthWebViewController.swift",
     "Handler/OAuthSwiftURLHandlerProxy.swift",
